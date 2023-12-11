@@ -18,12 +18,17 @@ router.post('/', async (req, res) => {
 
   const weather = await getWeatherByCityName(url1);
   console.log("the weather data => ",weather)
-  const forecast = weather? 
-    `for ${weather.name}, ${weather.sys.country}: ${weather.weather[0].description}`
-    : ''
+  let forecast
+  if(weather) {
+    const city = weather.name, country = weather.sys.country;
+    const desc = weather.weather[0].description;
+    const time = new Date().toLocaleTimeString({},{timezone: weather.timezone});
+    forecast = `for ${city}, ${country} ${time} : ${desc}`
+    
+  }
+  
   res.render('index', {
     weather, forecast
-    // city: weather? weather.name : undefined
   });
 });
 
